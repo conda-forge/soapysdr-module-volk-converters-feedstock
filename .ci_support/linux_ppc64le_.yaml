@@ -7,7 +7,7 @@ channel_targets:
 cxx_compiler:
 - gxx
 cxx_compiler_version:
-- '11'
+- '12'
 docker_image:
 - quay.io/condaforge/linux-anvil-cos7-x86_64
 soapysdr:
@@ -15,4 +15,4 @@ soapysdr:
 target_platform:
 - linux-ppc64le
 volk:
-- '3.0'
+- '3.1'
