@@ -1,0 +1,56 @@
+schema_version: 1
+
+context:
+  version: "0.1.1"
+
+package:
+  name: soapysdr-module-volk-converters
+  version: ${{ version }}
+
+source:
+  url: https://github.com/pothosware/SoapyVOLKConverters/archive/soapy-volk-converters-${{ version }}.tar.gz
+  sha256: c7e12846b926bf0dde01809d1bcb0bf7fcb3e84a4e1e543b834914a392306658
+
+build:
+  number: 5
+
+requirements:
+  build:
+    - ${{ compiler("cxx") }}
+    - ${{ stdlib("c") }}
+    - cmake
+    - ninja
+  host:
+    - soapysdr
+    - volk
+
+tests:
+  - package_contents:
+      strict: true
+      files:
+        - if: not win
+          then: lib/SoapySDR/modules${{ soapysdr }}/libvolkConverters.so
+          else: Library/lib/SoapySDR/modules${{ soapysdr }}/volkConverters.dll
+  - script:
+      - SoapySDRUtil --info
+      - if: not win
+        then: SoapySDRUtil --info | grep volkConverters
+        else: SoapySDRUtil --info | findstr /l volkConverters
+
+about:
+  license: GPL-3.0-or-later
+  license_file: COPYING
+  summary: SoapySDR module that registers type converters implemented in VOLK
+  description: >
+    This Soapy module adds vectorized numeric conversion functions, providing
+    more efficient conversions in many cases than with stock SoapySDR. Once
+    this module is installed, nothing more needs to be done; Soapy modules that
+    use SoapySDR's converter infrastructure will automatically default to these
+    new converters.
+  homepage: https://github.com/pothosware/SoapyVOLKConverters/wiki
+  repository: https://github.com/pothosware/SoapyVOLKConverters
+  documentation: https://github.com/pothosware/SoapyVOLKConverters/wiki
+
+extra:
+  recipe-maintainers:
+    - ryanvolz
